@@ -1,0 +1,61 @@
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<input type="text" id="message"  /><button onclick="send()">
+SUBMIT
+</button>
+<table id="listMessage">
+  <tr>
+    <th>Message</th>
+  
+  </tr>
+  
+</table>
+
+<script>
+ var firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+    
+    function send(){
+    let mes=document.getElementById("message").value;
+    
+     firebase.database().ref('messages/').set({
+         message: mes,
+         
+       });
+       document.getElementById("message").value=""
+    }
+    var starCountRef = firebase.database().ref('messages/');
+starCountRef.on('value', function(snapshot) {
+var d1 = document.getElementById('listMessage');
+if(snapshot.val()){
+
+d1.insertAdjacentHTML('beforeend', `<tr><td>${snapshot.val().message}</td></tr>`);
+}
+
+  
+});
+</script>
